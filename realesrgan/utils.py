@@ -8,7 +8,7 @@ import torch
 from basicsr.utils.download_util import load_file_from_url
 from torch.nn import functional as F
 
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #parent directory of parent directory of this file
 
 
 class RealESRGANer():
@@ -105,9 +105,9 @@ class RealESRGANer():
             self.mod_pad_h, self.mod_pad_w = 0, 0
             _, _, h, w = self.img.size()
             if (h % self.mod_scale != 0):
-                self.mod_pad_h = (self.mod_scale - h % self.mod_scale)
+                self.mod_pad_h = (self.mod_scale - h % self.mod_scale) # this is to make the shape compatible for pixel shuffle
             if (w % self.mod_scale != 0):
-                self.mod_pad_w = (self.mod_scale - w % self.mod_scale)
+                self.mod_pad_w = (self.mod_scale - w % self.mod_scale) # this is to make the shape compatible for pixel shuffle
             self.img = F.pad(self.img, (0, self.mod_pad_w, 0, self.mod_pad_h), 'reflect')
 
     def process(self):
@@ -151,7 +151,7 @@ class RealESRGANer():
                 # input tile dimensions
                 input_tile_width = input_end_x - input_start_x
                 input_tile_height = input_end_y - input_start_y
-                tile_idx = y * tiles_x + x + 1
+                tile_idx = y * tiles_x + x + 1 # start from 1
                 input_tile = self.img[:, :, input_start_y_pad:input_end_y_pad, input_start_x_pad:input_end_x_pad]
 
                 # upscale tile
